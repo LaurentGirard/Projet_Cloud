@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="celebrityQuizz">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Quizz Célébrités</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+
+    <script src="jquery.min.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="angular-google-gapi/dist/angular-google-gapi.min.js"></script>
+
+    <script src="app.js"></script>
+    
+  </head>
+
+  <body ng-controller="AnswerController"> 
+
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand">Celebrity Quizz !</a>
+          </div>
+          <div class="navbar-right">
+            <a class="btn btn-default navbar-btn" ng-click="openPage('play')">Play</a>
+            <a class="btn btn-default navbar-btn" ng-click="openPage('highscores')">HighScores</a>
+          </div>
+        </div>
+      </nav>
+
+      <div ng-show = "page == 'play'">
+        <div class="row" ng-show="name == null">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3>Insert your name</h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="name">Name:</label>
+                  <input type="text" class="form-control" ng-model="input_name">
+                </div>
+                <button class="btn btn-success" ng-click="name=input_name">Start playing!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div ng-show= "name != null">
+
+        {{ valide }}
+        <p> {{ poolQuestions[iterator].q }}</p>
+
+        <button name = "answer" value = "poolValidate.ok" ng-click="selection(1)">{{ poolQuestions[iterator].answers[0] }}</button>
+        <button name = "answer" value = "poolValidate.pas_ok" ng-click="selection(2)">{{ poolQuestions[iterator].answers[1] }}</button>
+        <button name = "answer" value = "poolValidate.pas_ok" ng-click="selection(3)">{{ poolQuestions[iterator].answers[2] }} </button>
+        <br>
+        
+        <br>
+      </div>
+      
+      <div ng-show = "page == 'endGame'">
+        <p> Ton score est de : {{ current_score }}</p>
+        <button name="reset" ng-click="reset()">Recommencer cette magniGique partie de l'enfer du lol</button>
+        <button name="online_score" ng-click="openPage('highscores')"> Afficher les Highscores</button>
+      </div>
+
+      <div ng-show="page == 'highscores'">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="score in highscores | orderBy : '-score'">
+                  <td>{{($index+1)}}</td>
+                  <td>{{score.name}}</td>
+                  <td>{{score.score}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4 ng-show="highscores == null">Waiting for data...</h4>
+          </div>
+        </div>
+      </div>
+
+  </body>
+
+</html>
+
+
