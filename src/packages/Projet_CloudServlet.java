@@ -7,6 +7,6 @@ import javax.servlet.http.*;
 public class Projet_CloudServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
-		resp.getWriter().println("Helloooo, world");
+		resp.getWriter().println("Helloooo, world");		
 	}
 }

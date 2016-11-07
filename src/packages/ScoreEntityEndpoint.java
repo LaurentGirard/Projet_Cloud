@@ -8,6 +8,11 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -160,6 +165,44 @@ public class ScoreEntityEndpoint {
 			mgr.close();
 		}
 		return contains;
+	}
+	
+	
+	/**
+	 * This method is for request with Jena from dbpedia
+	 * It uses HTTP POST method.
+	 *
+	 * @param scoreentity the entity to be inserted.
+	 * @return The inserted entity.
+	 */
+	@ApiMethod(name = "requestJena")
+	public ScoreEntity requestJena() {
+		ScoreEntity score = new ScoreEntity();
+		PersistenceManager mgr = getPersistenceManager();
+		
+		try {
+			String sparqlQueryString1 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+										"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+										"PREFIX : <http://dbpedia.org/resource/>" + 
+										"select *" + 
+										"Where { ?x a foaf:Person. "
+										+ "?x foaf:name ?y}"
+										+ "LIMIT 10";
+			score.setScore(-15);
+			score.setId(java.lang.Long.MAX_VALUE);
+			//Query query = (Query) QueryFactory.create(sparqlQueryString1);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", sparqlQueryString1);
+
+			ResultSet results = qexec.execSelect();
+			   
+			score.setName(ResultSetFormatter.asText(results));
+			qexec.close() ;
+			
+			mgr.makePersistent(score);
+		} finally {
+			mgr.close();
+		}
+		return score;
 	}
 
 	private static PersistenceManager getPersistenceManager() {
