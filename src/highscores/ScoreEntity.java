@@ -1,4 +1,4 @@
-package packages;
+package highscores;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;

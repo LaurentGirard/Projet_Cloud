@@ -1,4 +1,4 @@
-package packages;
+package highscores;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

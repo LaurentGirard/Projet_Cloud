@@ -1,6 +1,4 @@
-package packages;
-
-import packages.PMF;
+package highscores;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -13,6 +11,8 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+
+import highscores.PMF;
 
 import java.util.HashMap;
 import java.util.List;
